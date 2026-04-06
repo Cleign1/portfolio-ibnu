@@ -1,59 +1,31 @@
-import { headers as getHeaders } from 'next/headers.js'
-import Image from 'next/image'
-import { getPayload } from 'payload'
-import React from 'react'
-import { fileURLToPath } from 'url'
+import { PageShell } from './components/PageShell'
+import { Hero } from './components/Hero'
+import { About } from './components/About'
+import { Experience } from './components/Experience'
+import { Skills } from './components/Skills'
+import { Projects } from './components/Projects'
+import { Footer } from './components/Footer'
 
-import config from '@/payload.config'
-import './styles.css'
-
-export default async function HomePage() {
-  const headers = await getHeaders()
-  const payloadConfig = await config
-  const payload = await getPayload({ config: payloadConfig })
-  const { user } = await payload.auth({ headers })
-
-  const fileURL = `vscode://file/${fileURLToPath(import.meta.url)}`
-
+/**
+ * Homepage — Server Component.
+ *
+ * PageShell (Client) owns all interactive orchestration: navigation state,
+ * terminal overlay, scroll animations. All section components remain RSCs and
+ * are passed as children so they are never pulled into the client bundle.
+ *
+ * Skills section: add <Skills /> here once the component is ported.
+ */
+export default function HomePage() {
   return (
-    <div className="home">
-      <div className="content">
-        <picture>
-          <source srcSet="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-favicon.svg" />
-          <Image
-            alt="Payload Logo"
-            height={65}
-            src="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-favicon.svg"
-            width={65}
-          />
-        </picture>
-        {!user && <h1>Welcome to your new project.</h1>}
-        {user && <h1>Welcome back, {user.email}</h1>}
-        <div className="links">
-          <a
-            className="admin"
-            href={payloadConfig.routes.admin}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Go to admin panel
-          </a>
-          <a
-            className="docs"
-            href="https://payloadcms.com/docs"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Documentation
-          </a>
-        </div>
+    <PageShell>
+      <div id="hero">
+        <Hero />
       </div>
-      <div className="footer">
-        <p>Update this page by editing</p>
-        <a className="codeLink" href={fileURL}>
-          <code>app/(frontend)/page.tsx</code>
-        </a>
-      </div>
-    </div>
+      <About />
+      <Experience />
+      <Skills />
+      <Projects />
+      <Footer />
+    </PageShell>
   )
 }
