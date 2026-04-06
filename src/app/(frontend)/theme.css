@@ -1,0 +1,183 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Portfolio Color System - Light Mode */
+  --bg-base: #F5F4F0;
+  --bg-surface: #FFFFFF;
+  --bg-subtle: #ECEAE4;
+  --border: #D9D7D0;
+  --text-primary: #1C1B18;
+  --text-secondary: #57534E;
+  --text-muted: #A8A29E;
+  --accent: #B45309;
+  --accent-hover: #92400E;
+  --accent-subtle: rgba(180, 83, 9, 0.08);
+
+  /* Typography - System font stack for zero load time */
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.dark {
+  /* Portfolio Color System - Dark Mode */
+  --bg-base: #111110;
+  --bg-surface: #1A1A18;
+  --bg-subtle: #222220;
+  --border: #2E2E2B;
+  --text-primary: #EEEDE9;
+  --text-secondary: #A8A59E;
+  --text-muted: #6B6966;
+  --accent: #D97706;
+  --accent-hover: #B45309;
+  --accent-subtle: rgba(217, 119, 6, 0.10);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    line-height: 1.7;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+  }
+
+  /* Custom cursor styles - desktop only */
+  @media (pointer: fine) {
+    body {
+      cursor: none;
+    }
+
+    a, button, [role="button"] {
+      cursor: none;
+    }
+  }
+}
+
+/* Experience section — hover accent stripe */
+.experience-item {
+  border-left: 3px solid transparent;
+  padding-left: 0;
+  transition: background-color 150ms ease, border-left-color 150ms ease, padding-left 150ms ease;
+}
+
+.experience-item:not(:last-child) {
+  border-bottom: 1px solid var(--border);
+}
+
+.experience-item:hover {
+  background-color: var(--bg-subtle);
+  border-left-color: var(--accent);
+  padding-left: 1.25rem;
+}
+
+/* Footer — social icon & terminal button hover */
+.social-link,
+.footer-terminal-btn {
+  color: var(--text-muted);
+  transition: color 150ms ease;
+}
+
+.social-link:hover,
+.footer-terminal-btn:hover {
+  color: var(--accent);
+}
+
+/* Hero — staggered fade-in animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.animate-fade-in-delay-1 {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease 0.15s forwards;
+}
+
+.animate-fade-in-delay-2 {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease 0.3s forwards;
+}
+
+.animate-fade-in-delay-3 {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease 0.45s forwards;
+}
+
+/* Terminal — slide-up entrance & blinking cursor */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.2s ease forwards;
+}
+
+.animate-blink {
+  animation: blink 1s step-start infinite;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Section scroll-in animation — driven by IntersectionObserver in PageShell */
+section:not(:first-child) {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Terminal scrollbar */
+.terminal-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.terminal-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.terminal-content::-webkit-scrollbar-thumb {
+  background: rgba(217, 119, 6, 0.3);
+  border-radius: 3px;
+}
+
+.terminal-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(217, 119, 6, 0.5);
+}
