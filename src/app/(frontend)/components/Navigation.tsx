@@ -53,7 +53,7 @@ export function Navigation({ activeSection }: NavigationProps) {
               className="font-sans font-semibold transition-colors"
               style={{ color: 'var(--text-primary)' }}
             >
-              A. Chen
+              I. Khaidar
             </button>
 
             {/* Desktop Navigation */}
