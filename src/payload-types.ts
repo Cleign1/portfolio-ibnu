@@ -91,9 +91,13 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     hero: Hero;
+    about: About;
+    experience: Experience;
   };
   globalsSelect: {
     hero: HeroSelect<false> | HeroSelect<true>;
+    about: AboutSelect<false> | AboutSelect<true>;
+    experience: ExperienceSelect<false> | ExperienceSelect<true>;
   };
   locale: null;
   widgets: {
@@ -483,6 +487,95 @@ export interface Hero {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about".
+ */
+export interface About {
+  id: number;
+  title: string;
+  bentoBlocks?:
+    | (
+        | {
+            content: string;
+            isQuote?: boolean | null;
+            /**
+             * Span 2 columns in the grid layout
+             */
+            colSpan2?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'text';
+          }
+        | {
+            label: string;
+            value: string;
+            colSpan2?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'infoCard';
+          }
+        | {
+            label: string;
+            tags: {
+              tag: string;
+              id?: string | null;
+            }[];
+            colSpan2?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'tagsCard';
+          }
+        | {
+            label: string;
+            media: number | Media;
+            title: string;
+            subtitle?: string | null;
+            colSpan2?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'mediaCard';
+          }
+      )[]
+    | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "experience".
+ */
+export interface Experience {
+  id: number;
+  title: string;
+  experienceBlocks?:
+    | {
+        company: string;
+        role: string;
+        dates: string;
+        context?: string | null;
+        bullets?:
+          | {
+              bullet: string;
+              id?: string | null;
+            }[]
+          | null;
+        tags?:
+          | {
+              tag: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'experienceItem';
+      }[]
+    | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "hero_select".
  */
 export interface HeroSelect<T extends boolean = true> {
@@ -506,6 +599,101 @@ export interface HeroSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about_select".
+ */
+export interface AboutSelect<T extends boolean = true> {
+  title?: T;
+  bentoBlocks?:
+    | T
+    | {
+        text?:
+          | T
+          | {
+              content?: T;
+              isQuote?: T;
+              colSpan2?: T;
+              id?: T;
+              blockName?: T;
+            };
+        infoCard?:
+          | T
+          | {
+              label?: T;
+              value?: T;
+              colSpan2?: T;
+              id?: T;
+              blockName?: T;
+            };
+        tagsCard?:
+          | T
+          | {
+              label?: T;
+              tags?:
+                | T
+                | {
+                    tag?: T;
+                    id?: T;
+                  };
+              colSpan2?: T;
+              id?: T;
+              blockName?: T;
+            };
+        mediaCard?:
+          | T
+          | {
+              label?: T;
+              media?: T;
+              title?: T;
+              subtitle?: T;
+              colSpan2?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "experience_select".
+ */
+export interface ExperienceSelect<T extends boolean = true> {
+  title?: T;
+  experienceBlocks?:
+    | T
+    | {
+        experienceItem?:
+          | T
+          | {
+              company?: T;
+              role?: T;
+              dates?: T;
+              context?: T;
+              bullets?:
+                | T
+                | {
+                    bullet?: T;
+                    id?: T;
+                  };
+              tags?:
+                | T
+                | {
+                    tag?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_widget".
  */
 export interface CollectionsWidget {
@@ -522,7 +710,7 @@ export interface TaskSchedulePublish {
   input: {
     type?: ('publish' | 'unpublish') | null;
     locale?: string | null;
-    global?: 'hero' | null;
+    global?: ('hero' | 'about' | 'experience') | null;
     user?: (number | null) | User;
   };
   output?: unknown;
