@@ -94,12 +94,14 @@ export interface Config {
     about: About;
     experience: Experience;
     skills: Skill;
+    projects: Project;
   };
   globalsSelect: {
     hero: HeroSelect<false> | HeroSelect<true>;
     about: AboutSelect<false> | AboutSelect<true>;
     experience: ExperienceSelect<false> | ExperienceSelect<true>;
     skills: SkillsSelect<false> | SkillsSelect<true>;
+    projects: ProjectsSelect<false> | ProjectsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -603,6 +605,43 @@ export interface Skill {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project {
+  id: number;
+  label: string;
+  title: string;
+  projectsBlocks?:
+    | {
+        number: string;
+        title: string;
+        description: string;
+        caseStudy: {
+          problem: string;
+          built: string;
+          result: string;
+        };
+        tags?:
+          | {
+              tag: string;
+              id?: string | null;
+            }[]
+          | null;
+        githubUrl?: string | null;
+        liveUrl?: string | null;
+        featured?: boolean | null;
+        thumbnail?: (number | null) | Media;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'projectItem';
+      }[]
+    | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "hero_select".
  */
 export interface HeroSelect<T extends boolean = true> {
@@ -749,6 +788,48 @@ export interface SkillsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects_select".
+ */
+export interface ProjectsSelect<T extends boolean = true> {
+  label?: T;
+  title?: T;
+  projectsBlocks?:
+    | T
+    | {
+        projectItem?:
+          | T
+          | {
+              number?: T;
+              title?: T;
+              description?: T;
+              caseStudy?:
+                | T
+                | {
+                    problem?: T;
+                    built?: T;
+                    result?: T;
+                  };
+              tags?:
+                | T
+                | {
+                    tag?: T;
+                    id?: T;
+                  };
+              githubUrl?: T;
+              liveUrl?: T;
+              featured?: T;
+              thumbnail?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_widget".
  */
 export interface CollectionsWidget {
@@ -765,7 +846,7 @@ export interface TaskSchedulePublish {
   input: {
     type?: ('publish' | 'unpublish') | null;
     locale?: string | null;
-    global?: ('hero' | 'about' | 'experience' | 'skills') | null;
+    global?: ('hero' | 'about' | 'experience' | 'skills' | 'projects') | null;
     user?: (number | null) | User;
   };
   output?: unknown;

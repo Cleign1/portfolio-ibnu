@@ -21,7 +21,10 @@ const GithubIcon = ({ size = 20 }: { size?: number }) => (
   </svg>
 )
 
-export interface Project {
+import { Media } from '@/payload-types'
+
+export interface ProjectData {
+  id?: string
   number: string
   title: string
   description: string
@@ -30,15 +33,15 @@ export interface Project {
     built: string
     result: string
   }
-  tags: string[]
-  githubUrl?: string
-  liveUrl?: string
-  featured?: boolean
-  thumbnail?: string
+  tags?: { tag: string, id?: string }[] | null
+  githubUrl?: string | null
+  liveUrl?: string | null
+  featured?: boolean | null
+  thumbnail?: string | Media | null
 }
 
 interface ProjectItemProps {
-  project: Project
+  project: ProjectData
   isLast: boolean
 }
 
@@ -122,7 +125,7 @@ export function ProjectItem({ project, isLast }: ProjectItemProps) {
           {project.featured && project.thumbnail && (
             <div className="hidden md:block mb-4">
               <Image
-                src={project.thumbnail}
+                src={typeof project.thumbnail === 'string' ? project.thumbnail : project.thumbnail?.url || ''}
                 alt={project.title}
                 width={300}
                 height={180}
@@ -174,16 +177,16 @@ export function ProjectItem({ project, isLast }: ProjectItemProps) {
 
           {/* Tags */}
           <div className="flex flex-wrap gap-2 mb-3">
-            {project.tags.map((tag) => (
+            {project.tags?.map((t) => (
               <span
-                key={tag}
+                key={t.id || t.tag}
                 className="px-2.5 py-1 rounded font-mono text-[11px]"
                 style={{
                   backgroundColor: 'var(--accent-subtle)',
                   color: 'var(--text-secondary)',
                 }}
               >
-                {tag}
+                {t.tag}
               </span>
             ))}
           </div>
