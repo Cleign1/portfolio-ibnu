@@ -13,6 +13,7 @@ import { Media } from './collections/Media'
 import { HeroGlobal } from './globals/Hero'
 import { AboutGlobal } from './globals/About'
 import { ExperienceGlobal } from './globals/Experience'
+import { SkillsGlobal } from './globals/Skills'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -25,7 +26,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media],
-  globals: [HeroGlobal, AboutGlobal, ExperienceGlobal],
+  globals: [HeroGlobal, AboutGlobal, ExperienceGlobal, SkillsGlobal],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

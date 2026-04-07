@@ -93,11 +93,13 @@ export interface Config {
     hero: Hero;
     about: About;
     experience: Experience;
+    skills: Skill;
   };
   globalsSelect: {
     hero: HeroSelect<false> | HeroSelect<true>;
     about: AboutSelect<false> | AboutSelect<true>;
     experience: ExperienceSelect<false> | ExperienceSelect<true>;
+    skills: SkillsSelect<false> | SkillsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -576,6 +578,31 @@ export interface Experience {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "skills".
+ */
+export interface Skill {
+  id: number;
+  title: string;
+  skillsBlocks?:
+    | {
+        label: string;
+        skills?:
+          | {
+              skill: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'skillCategory';
+      }[]
+    | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "hero_select".
  */
 export interface HeroSelect<T extends boolean = true> {
@@ -694,6 +721,34 @@ export interface ExperienceSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "skills_select".
+ */
+export interface SkillsSelect<T extends boolean = true> {
+  title?: T;
+  skillsBlocks?:
+    | T
+    | {
+        skillCategory?:
+          | T
+          | {
+              label?: T;
+              skills?:
+                | T
+                | {
+                    skill?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_widget".
  */
 export interface CollectionsWidget {
@@ -710,7 +765,7 @@ export interface TaskSchedulePublish {
   input: {
     type?: ('publish' | 'unpublish') | null;
     locale?: string | null;
-    global?: ('hero' | 'about' | 'experience') | null;
+    global?: ('hero' | 'about' | 'experience' | 'skills') | null;
     user?: (number | null) | User;
   };
   output?: unknown;
