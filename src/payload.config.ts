@@ -11,7 +11,8 @@ import { resendAdapter } from '@payloadcms/email-resend'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { HeroGlobal } from './globals/Hero'
-
+import { AboutGlobal } from './globals/About'
+import { ExperienceGlobal } from './globals/Experience'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -24,7 +25,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media],
-  globals: [HeroGlobal],
+  globals: [HeroGlobal, AboutGlobal, ExperienceGlobal],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
