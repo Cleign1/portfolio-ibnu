@@ -60,18 +60,18 @@ export function Footer() {
 
           {/* Email */}
           <a
-            href="mailto:alex@example.com"
+            href="mailto:ibnu@ibnukhaidar.my.id"
             className="inline-block text-[18px] md:text-[20px] mb-8 transition-opacity hover:opacity-70"
             style={{ color: 'var(--accent)' }}
           >
-            alex@example.com
+            ibnu@ibnukhaidar.my.id
           </a>
 
           {/* Social Icons */}
           <div className="flex justify-center gap-6 mb-8">
             {/* GitHub — theme-aware image: black in light mode, white in dark mode */}
             <a
-              href="https://github.com"
+              href="https://github.com/cleign1"
               target="_blank"
               rel="noopener noreferrer"
               className="social-link flex items-center"
@@ -99,7 +99,7 @@ export function Footer() {
 
             {/* LinkedIn */}
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/muhamad-ibnu-khaidar-hafiz/"
               target="_blank"
               rel="noopener noreferrer"
               className="social-link"
@@ -110,7 +110,7 @@ export function Footer() {
 
             {/* Email */}
             <a
-              href="mailto:alex@example.com"
+              href="mailto:ibnu@ibnukhaidar.my.id"
               className="social-link"
               aria-label="Send email"
             >
@@ -128,7 +128,7 @@ export function Footer() {
             className="font-mono text-[11px] md:text-[12px] text-center md:text-left"
             style={{ color: 'var(--text-muted)' }}
           >
-            Designed &amp; built by Alex Chen · 2026
+            Designed &amp; built by Ibnu Khaidar · 2026
           </p>
 
           {/* Terminal trigger — client island */}
