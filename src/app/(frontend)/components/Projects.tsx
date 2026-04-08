@@ -17,6 +17,8 @@ export async function Projects() {
   const initialData = projectsData || {
     label: 'PROJECTS',
     title: 'Selected work',
+    layout: 'list',
+    viewAllUrl: null,
     projectsBlocks: [
       {
         blockType: 'projectItem',
@@ -24,9 +26,10 @@ export async function Projects() {
         title: 'FlowState Design System',
         description: 'A production-ready component library for React and Figma',
         caseStudy: {
-          problem: 'Teams wasted weeks rebuilding the same components',
-          built: 'Unified design token system with 60+ components and documentation',
-          result: 'Reduced design-to-dev handoff time from 2 weeks to 2 days',
+          situation: 'Teams at fast-growing startups wasted weeks rebuilding the same UI components from scratch.',
+          task: 'Design and build a production-ready component library usable by both designers in Figma and developers in React.',
+          action: 'Created a unified design token system with 60+ components, full Storybook documentation, and a Figma library that mirrors every component 1-to-1.',
+          result: 'Reduced design-to-dev handoff time from 2 weeks to 2 days across 4 product teams.',
         },
         tags: [{ tag: 'React' }, { tag: 'TypeScript' }, { tag: 'Storybook' }, { tag: 'Figma' }],
         githubUrl: 'https://github.com',
@@ -43,9 +46,10 @@ export async function Projects() {
         title: 'Pulse Analytics Dashboard',
         description: 'Real-time analytics platform for SaaS products',
         caseStudy: {
-          problem: 'Existing dashboards took 10+ seconds to load',
-          built: 'Optimized data pipeline with incremental loading and virtualization',
-          result: 'Dashboard loads in under 1 second for 1M+ data points',
+          situation: 'A SaaS platform\'s analytics dashboard was unusable — it took over 10 seconds to load for any dataset above 100k rows.',
+          task: 'Redesign and re-implement the data pipeline and frontend rendering to handle 1M+ data points without sacrificing UX.',
+          action: 'Built an optimised streaming data pipeline with incremental loading, virtual scrolling, and progressive chart rendering using D3.',
+          result: 'Dashboard loads in under 1 second for 1M+ data points; churn among power users dropped by 30%.',
         },
         tags: [{ tag: 'Next.js' }, { tag: 'D3.js' }, { tag: 'PostgreSQL' }, { tag: 'WebSockets' }],
         githubUrl: 'https://github.com',
@@ -57,9 +61,10 @@ export async function Projects() {
         title: 'Clarity — Content Editor',
         description: 'Notion-like block editor built for technical writers',
         caseStudy: {
-          problem: 'Writers struggled with complex markdown syntax',
-          built: 'WYSIWYG editor with keyboard shortcuts and collaborative editing',
-          result: 'Adopted by 5,000+ writers, 95% satisfaction rating',
+          situation: 'Technical writers on documentation teams found markdown syntax a barrier that slowed their publishing workflow.',
+          task: 'Build a block-based WYSIWYG editor tailored to technical content, with first-class support for code blocks, callouts, and collaborative editing.',
+          action: 'Implemented a ProseMirror-based editor with keyboard shortcut discovery, real-time collaboration via WebSockets, and an extensible block system.',
+          result: 'Adopted by 5,000+ writers; 95% satisfaction rating in post-launch survey.',
         },
         tags: [{ tag: 'ProseMirror' }, { tag: 'React' }, { tag: 'Tailwind CSS' }],
         githubUrl: 'https://github.com',
@@ -70,15 +75,16 @@ export async function Projects() {
         title: 'DevTools Command Palette',
         description: 'VS Code-style command palette for web apps',
         caseStudy: {
-          problem: 'Users could not discover keyboard shortcuts',
-          built: 'Fuzzy search command palette with shortcuts and recent actions',
-          result: 'Power users reduced task completion time by 40%',
+          situation: 'Users of complex web apps struggled to discover keyboard shortcuts and frequently relied on slow mouse navigation.',
+          task: 'Design and ship a command palette that surfaces every available action via fuzzy search, without requiring any UI changes across the app.',
+          action: 'Built a VS Code-style command palette using Fuse.js for fuzzy search, Radix UI for accessible dialog primitives, and a plugin API for third-party commands.',
+          result: 'Power users reduced average task completion time by 40%; the palette was opened 2× more than the traditional nav menu within the first week.',
         },
         tags: [{ tag: 'TypeScript' }, { tag: 'Fuse.js' }, { tag: 'Radix UI' }],
         githubUrl: 'https://github.com',
         liveUrl: 'https://example.com',
       },
-    ]
+    ],
   }
 
   const serverURL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'

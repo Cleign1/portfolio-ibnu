@@ -604,23 +604,73 @@ export interface Skill {
   createdAt?: string | null;
 }
 /**
+ * Manage the "Selected work" projects section — add, reorder, and edit projects.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "projects".
  */
 export interface Project {
   id: number;
+  /**
+   * Small mono label above the title (e.g. PROJECTS).
+   */
   label: string;
   title: string;
+  /**
+   * Leave blank to hide the "View all projects" link.
+   */
+  viewAllUrl?: string | null;
+  /**
+   * Controls how projects are rendered on the frontend. "Minimal list" mirrors the Figma design.
+   */
+  layout: 'list' | 'grid' | 'feature';
+  /**
+   * Add and reorder projects. Drag rows to change display order.
+   */
   projectsBlocks?:
     | {
+        /**
+         * Shown on the list row (e.g. 01, 02 …)
+         */
         number: string;
+        /**
+         * Highlighted with a "Featured" badge and thumbnail preview.
+         */
+        featured?: boolean | null;
+        /**
+         * Lower numbers appear first in the list.
+         */
+        displayOrder?: number | null;
         title: string;
+        /**
+         * One or two sentences shown beneath the title on the list row.
+         */
         description: string;
+        thumbnail?: (number | null) | Media;
+        /**
+         * Shown inside the project modal. Each section can be a full paragraph.
+         */
         caseStudy: {
-          problem: string;
-          built: string;
+          /**
+           * Describe the situation or context you were working in.
+           */
+          situation: string;
+          /**
+           * What was your specific role or goal?
+           */
+          task: string;
+          /**
+           * Describe the steps you took and decisions you made.
+           */
+          action: string;
+          /**
+           * What was the outcome? Include numbers where possible.
+           */
           result: string;
         };
+        /**
+         * Technology or tool labels shown as small badges.
+         */
         tags?:
           | {
               tag: string;
@@ -629,8 +679,6 @@ export interface Project {
           | null;
         githubUrl?: string | null;
         liveUrl?: string | null;
-        featured?: boolean | null;
-        thumbnail?: (number | null) | Media;
         id?: string | null;
         blockName?: string | null;
         blockType: 'projectItem';
@@ -793,6 +841,8 @@ export interface SkillsSelect<T extends boolean = true> {
 export interface ProjectsSelect<T extends boolean = true> {
   label?: T;
   title?: T;
+  viewAllUrl?: T;
+  layout?: T;
   projectsBlocks?:
     | T
     | {
@@ -800,13 +850,17 @@ export interface ProjectsSelect<T extends boolean = true> {
           | T
           | {
               number?: T;
+              featured?: T;
+              displayOrder?: T;
               title?: T;
               description?: T;
+              thumbnail?: T;
               caseStudy?:
                 | T
                 | {
-                    problem?: T;
-                    built?: T;
+                    situation?: T;
+                    task?: T;
+                    action?: T;
                     result?: T;
                   };
               tags?:
@@ -817,8 +871,6 @@ export interface ProjectsSelect<T extends boolean = true> {
                   };
               githubUrl?: T;
               liveUrl?: T;
-              featured?: T;
-              thumbnail?: T;
               id?: T;
               blockName?: T;
             };

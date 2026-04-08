@@ -50,15 +50,13 @@
     font-weight: 500;
   }
 
-  /* Custom cursor styles - desktop only */
-  @media (pointer: fine) {
-    body {
-      cursor: none;
-    }
 
-    a, button, [role="button"] {
-      cursor: none;
-    }
+}
+
+/* Custom cursor — must live outside @layer so it wins over Tailwind utility layers */
+@media (pointer: fine) {
+  *, *::before, *::after {
+    cursor: none !important;
   }
 }
 

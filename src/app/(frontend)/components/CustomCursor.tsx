@@ -7,6 +7,7 @@ export function CustomCursor() {
   const [isHovering, setIsHovering] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const rafRef = useRef<number>(undefined)
+  const isHoveringRef = useRef(false)
 
   useEffect(() => {
     // Only show custom cursor on desktop (pointer: fine)
@@ -23,10 +24,19 @@ export function CustomCursor() {
     const handleMove = (e: MouseEvent) => {
       targetX = e.clientX
       targetY = e.clientY
+
+      // Detect interactive elements on every move — most reliable approach
+      const el = e.target as HTMLElement
+      const interactive = !!el.closest('a, button, [role="button"]')
+
+      // Only call setState when the value actually changes to avoid churn
+      if (interactive !== isHoveringRef.current) {
+        isHoveringRef.current = interactive
+        setIsHovering(interactive)
+      }
     }
 
     const animate = () => {
-      // Smooth interpolation
       currentX += (targetX - currentX) * 0.15
       currentY += (targetY - currentY) * 0.15
 
@@ -34,24 +44,11 @@ export function CustomCursor() {
       rafRef.current = requestAnimationFrame(animate)
     }
 
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement
-      const isInteractive =
-        target.tagName === 'A' ||
-        target.tagName === 'BUTTON' ||
-        target.closest('a') !== null ||
-        target.closest('button') !== null
-
-      setIsHovering(isInteractive)
-    }
-
     window.addEventListener('mousemove', handleMove, { passive: true })
-    window.addEventListener('mouseover', handleMouseOver, { passive: true })
     rafRef.current = requestAnimationFrame(animate)
 
     return () => {
       window.removeEventListener('mousemove', handleMove)
-      window.removeEventListener('mouseover', handleMouseOver)
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
   }, [])
@@ -60,7 +57,7 @@ export function CustomCursor() {
 
   return (
     <div
-      className="fixed top-0 left-0 pointer-events-none z-9999"
+      className="fixed top-0 left-0 pointer-events-none z-[10000]"
       style={{
         transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
         willChange: 'transform',

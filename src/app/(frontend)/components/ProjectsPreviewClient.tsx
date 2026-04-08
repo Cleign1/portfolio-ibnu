@@ -16,10 +16,19 @@ export function ProjectsPreviewClient({ initialData, serverURL }: Props) {
     depth: 1,
   })
 
-  const safeData = data || initialData
-  const label = safeData?.label || 'PROJECTS'
-  const title = safeData?.title || 'Selected work'
-  const projectsBlocks = safeData?.projectsBlocks || []
+  const safeData        = data || initialData
+  const label           = safeData?.label           || 'PROJECTS'
+  const title           = safeData?.title           || 'Selected work'
+  const layout          = safeData?.layout          || 'list'
+  const viewAllUrl      = safeData?.viewAllUrl      || null
+  const projectsBlocks  = safeData?.projectsBlocks  || []
+
+  // Sort by displayOrder if present
+  const sorted = [...projectsBlocks].sort(
+    (a: any, b: any) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0),
+  )
+
+  const items = sorted.filter((b: any) => b.blockType === 'projectItem')
 
   return (
     <section
@@ -28,7 +37,8 @@ export function ProjectsPreviewClient({ initialData, serverURL }: Props) {
       style={{ backgroundColor: 'var(--bg-base)' }}
     >
       <div className="mx-auto max-w-[760px] px-6 md:px-20 lg:px-20">
-        {/* Section Label */}
+
+        {/* ── Section Label ── */}
         <div
           className="font-mono text-[11px] uppercase tracking-[0.12em] mb-4"
           style={{ color: 'var(--text-muted)' }}
@@ -36,7 +46,7 @@ export function ProjectsPreviewClient({ initialData, serverURL }: Props) {
           {label}
         </div>
 
-        {/* Section Title */}
+        {/* ── Section Title ── */}
         <h2
           className="text-[40px] font-serif mb-12"
           style={{ color: 'var(--text-primary)' }}
@@ -44,30 +54,63 @@ export function ProjectsPreviewClient({ initialData, serverURL }: Props) {
           {title}
         </h2>
 
-        {/* Projects List */}
-        <div className="space-y-0">
-          {projectsBlocks.map((block: any, index: number) => {
-            if (block.blockType !== 'projectItem') return null
-            return (
+        {/* ── Project List ── */}
+        {layout === 'grid' ? (
+          /* 2-column grid layout */
+          <div className="grid md:grid-cols-2 gap-6">
+            {items.map((block: any, index: number) => (
               <ProjectItem
                 key={block.id || index}
                 project={block}
-                isLast={index === projectsBlocks.length - 1}
+                isLast={index === items.length - 1}
               />
-            )
-          })}
-        </div>
+            ))}
+          </div>
+        ) : layout === 'feature' ? (
+          /* Featured-first layout: first item full-width, rest as list */
+          <div>
+            {items[0] && (
+              <div className="mb-8">
+                <ProjectItem project={items[0]} isLast={false} />
+              </div>
+            )}
+            <div className="space-y-0">
+              {items.slice(1).map((block: any, index: number) => (
+                <ProjectItem
+                  key={block.id || index}
+                  project={block}
+                  isLast={index === items.length - 2}
+                />
+              ))}
+            </div>
+          </div>
+        ) : (
+          /* Default: minimal list */
+          <div className="space-y-0">
+            {items.map((block: any, index: number) => (
+              <ProjectItem
+                key={block.id || index}
+                project={block}
+                isLast={index === items.length - 1}
+              />
+            ))}
+          </div>
+        )}
 
-        {/* View All Link */}
-        <div className="mt-8">
-          <a
-            href="#"
-            className="inline-flex items-center gap-2 transition-colors"
-            style={{ color: 'var(--accent)' }}
-          >
-            View all projects →
-          </a>
-        </div>
+        {/* ── View All link ── */}
+        {viewAllUrl && (
+          <div className="mt-8">
+            <a
+              href={viewAllUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 transition-colors"
+              style={{ color: 'var(--accent)' }}
+            >
+              View all projects →
+            </a>
+          </div>
+        )}
       </div>
     </section>
   )
