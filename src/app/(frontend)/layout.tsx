@@ -3,6 +3,8 @@ import './styles.css'
 import './theme.css'
 import { CustomCursor } from './components/CustomCursor'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Portfolio - Ibnu Khaidar',
   description: 'Portfolio of Ibnu Khaidar.',
