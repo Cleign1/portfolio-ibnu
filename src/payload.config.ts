@@ -47,7 +47,12 @@ export default buildConfig({
           disablePayloadAccessControl: true,
           generateFileURL: ({ filename, prefix }) => {
             const key = prefix ? `${prefix}/${filename}` : filename
-            return `${process.env.R2_PUBLIC_URL}/portfolio-ibnu/${key}`
+            const safeKey = key
+              .split('/')
+              .map((segment) => encodeURIComponent(segment))
+              .join('/')
+            const baseURL = (process.env.R2_PUBLIC_URL || '').replace(/\/$/, '')
+            return `${baseURL}/portfolio-ibnu/${safeKey}`
           },
         },
       },

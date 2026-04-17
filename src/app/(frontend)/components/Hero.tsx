@@ -43,7 +43,10 @@ const LinkedinIcon = ({ size = 20 }: { size?: number }) => (
 
 function AvailableBadge() {
   return (
-    <div className="flex items-center gap-2 font-mono text-[11px]" style={{ color: 'var(--text-muted)' }}>
+    <div
+      className="flex items-center gap-2 font-mono text-[11px]"
+      style={{ color: 'var(--text-muted)' }}
+    >
       <span className="w-2 h-2 rounded-full" style={{ backgroundColor: 'var(--accent)' }} />
       Available for work
     </div>
@@ -57,12 +60,24 @@ function SocialLinks({ github, linkedin, email }: Pick<HeroType, 'github' | 'lin
     <div className="pt-4 space-y-4">
       <div className="flex gap-6">
         {github && (
-          <a href={github} target="_blank" rel="noopener noreferrer" className="social-link" aria-label="GitHub profile">
+          <a
+            href={github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="social-link"
+            aria-label="GitHub profile"
+          >
             <GithubIcon size={20} />
           </a>
         )}
         {linkedin && (
-          <a href={linkedin} target="_blank" rel="noopener noreferrer" className="social-link" aria-label="LinkedIn profile">
+          <a
+            href={linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="social-link"
+            aria-label="LinkedIn profile"
+          >
             <LinkedinIcon size={20} />
           </a>
         )}
@@ -84,10 +99,16 @@ function HeroContent({ data }: { data: HeroType }) {
 
       {/* Name */}
       <div className="space-y-2 animate-fade-in">
-        <h1 className="text-[72px] md:text-[80px] leading-[0.95] font-serif" style={{ color: 'var(--text-primary)' }}>
+        <h1
+          className="text-[72px] md:text-[80px] leading-[0.95] font-serif"
+          style={{ color: 'var(--text-primary)' }}
+        >
           {data.firstName}
         </h1>
-        <h1 className="text-[72px] md:text-[80px] leading-[0.95] font-serif" style={{ color: 'var(--text-primary)' }}>
+        <h1
+          className="text-[72px] md:text-[80px] leading-[0.95] font-serif"
+          style={{ color: 'var(--text-primary)' }}
+        >
           {data.lastName}
         </h1>
       </div>
@@ -149,6 +170,7 @@ function ProfilePhoto({ photo, name }: { photo: HeroType['photo']; name: string 
         className="w-full aspect-square object-cover rounded-lg grayscale-30"
         style={{ border: '1px solid var(--border)' }}
         priority
+        unoptimized
       />
     </div>
   )
@@ -178,15 +200,24 @@ export async function Hero() {
             {data.availableForWork && <AvailableBadge />}
 
             <div className="space-y-2 animate-fade-in">
-              <h1 className="text-[72px] md:text-[80px] leading-[0.95] font-serif" style={{ color: 'var(--text-primary)' }}>
+              <h1
+                className="text-[72px] md:text-[80px] leading-[0.95] font-serif"
+                style={{ color: 'var(--text-primary)' }}
+              >
                 {data.firstName}
               </h1>
-              <h1 className="text-[72px] md:text-[80px] leading-[0.95] font-serif" style={{ color: 'var(--text-primary)' }}>
+              <h1
+                className="text-[72px] md:text-[80px] leading-[0.95] font-serif"
+                style={{ color: 'var(--text-primary)' }}
+              >
                 {data.lastName}
               </h1>
             </div>
 
-            <p className="text-[20px] animate-fade-in-delay-1" style={{ color: 'var(--text-secondary)' }}>
+            <p
+              className="text-[20px] animate-fade-in-delay-1"
+              style={{ color: 'var(--text-secondary)' }}
+            >
               {data.role}
             </p>
             <p
@@ -198,13 +229,21 @@ export async function Hero() {
 
             <div className="flex flex-wrap justify-center gap-6 animate-fade-in-delay-3">
               {data.ctaLabel && data.ctaTarget && (
-                <a href={data.ctaTarget} className="group inline-flex items-center gap-2 transition-colors" style={{ color: 'var(--accent)' }}>
+                <a
+                  href={data.ctaTarget}
+                  className="group inline-flex items-center gap-2 transition-colors"
+                  style={{ color: 'var(--accent)' }}
+                >
                   {data.ctaLabel}
                   <ArrowDown size={16} className="group-hover:translate-y-1 transition-transform" />
                 </a>
               )}
               {data.cvUrl && (
-                <a href={data.cvUrl} className="underline hover:opacity-70 transition-opacity" style={{ color: 'var(--text-secondary)' }}>
+                <a
+                  href={data.cvUrl}
+                  className="underline hover:opacity-70 transition-opacity"
+                  style={{ color: 'var(--text-secondary)' }}
+                >
                   Download CV
                 </a>
               )}
