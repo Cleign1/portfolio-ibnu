@@ -5,6 +5,7 @@ import { Experience } from './components/Experience'
 import { Skills } from './components/Skills'
 import { Projects } from './components/Projects'
 import { Footer } from './components/Footer'
+import { RelevantExperience } from './components/RelevantExperience'
 
 /**
  * Homepage — Server Component.
@@ -23,6 +24,7 @@ export default function HomePage() {
       </div>
       <About />
       <Experience />
+      <RelevantExperience />
       <Skills />
       <Projects />
       <Footer />

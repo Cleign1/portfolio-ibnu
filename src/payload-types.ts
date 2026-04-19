@@ -92,6 +92,7 @@ export interface Config {
   globals: {
     hero: Hero;
     about: About;
+    relevantExperience: RelevantExperience;
     experience: Experience;
     skills: Skill;
     projects: Project;
@@ -99,6 +100,7 @@ export interface Config {
   globalsSelect: {
     hero: HeroSelect<false> | HeroSelect<true>;
     about: AboutSelect<false> | AboutSelect<true>;
+    relevantExperience: RelevantExperienceSelect<false> | RelevantExperienceSelect<true>;
     experience: ExperienceSelect<false> | ExperienceSelect<true>;
     skills: SkillsSelect<false> | SkillsSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
@@ -624,6 +626,40 @@ export interface About {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "relevantExperience".
+ */
+export interface RelevantExperience {
+  id: number;
+  title: string;
+  relevantexperienceBlocks?:
+    | {
+        company: string;
+        role: string;
+        dates: string;
+        context?: string | null;
+        bullets?:
+          | {
+              bullet: string;
+              id?: string | null;
+            }[]
+          | null;
+        tags?:
+          | {
+              tag: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'relevantExperienceItem';
+      }[]
+    | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "experience".
  */
 export interface Experience {
@@ -849,6 +885,43 @@ export interface AboutSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "relevantExperience_select".
+ */
+export interface RelevantExperienceSelect<T extends boolean = true> {
+  title?: T;
+  relevantexperienceBlocks?:
+    | T
+    | {
+        relevantExperienceItem?:
+          | T
+          | {
+              company?: T;
+              role?: T;
+              dates?: T;
+              context?: T;
+              bullets?:
+                | T
+                | {
+                    bullet?: T;
+                    id?: T;
+                  };
+              tags?:
+                | T
+                | {
+                    tag?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "experience_select".
  */
 export interface ExperienceSelect<T extends boolean = true> {
@@ -976,7 +1049,7 @@ export interface TaskSchedulePublish {
   input: {
     type?: ('publish' | 'unpublish') | null;
     locale?: string | null;
-    global?: ('hero' | 'about' | 'experience' | 'skills' | 'projects') | null;
+    global?: ('hero' | 'about' | 'relevantExperience' | 'experience' | 'skills' | 'projects') | null;
     user?: (number | null) | User;
   };
   output?: unknown;
