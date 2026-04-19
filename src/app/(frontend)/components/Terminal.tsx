@@ -22,14 +22,14 @@ const INITIAL_HISTORY: HistoryEntry[] = [
 ]
 
 const COMMANDS: Record<string, string> = {
-  whoami: `Ibnu Khaidar\nProduct Designer & Frontend Developer\n\nI design and build thoughtful digital products that solve real problems.\nCurrently crafting user experiences at early-stage startups.`,
+  whoami: `Ibnu Khaidar\n\nFull-stack developer with a strong focus on real-time web applications and streaming systems Experienced in building browser-based audio tools and scalable backend services using Node.js, WebSocket, and FFmpeg. Passionate about delivering high performance, production ready solutions with clean architecture and real time communication.`,
 
   skills: `Technical Stack:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Frontend:    React, TypeScript, Next.js, Tailwind CSS
-Backend:     Node.js, PostgreSQL, Prisma, GraphQL
-Design:      Figma, Design Systems, Prototyping
-Tools:       Git, Docker, Vercel, Linear`,
+Programming Language: Javascript, Python, HTML, CSS, SQL, PHP
+Frontend:             React, Next.js, Vite
+Backend:              Express Node.js, Flask
+Machine Learning:     Tensorflow, Pytorch`,
 
   contact: `Contact Information:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -40,7 +40,8 @@ LinkedIn:    linkedin.com/in/muhamad-ibnu-khaidar-hafiz`,
   work: `Work Experience:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Workshop Lab Assistant & Instructor & Host          Jan 2023 - Dec 2024`,
+Software Developer Intern - PT NexCast Indonesia
+Dec 2025 - Present`,
 
   help: `Available Commands:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -48,29 +49,38 @@ whoami       Personal info and bio
 skills       Technical stack
 contact      Contact information
 work         Work experience
+related      Related Experience
 help         Show this help menu
 clear        Clear terminal
 exit         Close terminal`,
+
+  related: `Related Experience
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Machine Learning Cohort - Bangkit Academy (Google, Gojek, Tokopedia, Traveloka)
+Feb 2024 - Jul 2024
+
+Laboratory Assistant & Workshop Instructor - LePKom Gunadarma
+Jan 2023 - Dec 2024`,
 }
 
 /* ─── resize handle definitions ─────────────────────────────────────────── */
 const HANDLES = [
-  { dir: 'n',  className: 'absolute top-0 left-3 right-3 h-2'         },
-  { dir: 's',  className: 'absolute bottom-0 left-3 right-3 h-2'      },
-  { dir: 'e',  className: 'absolute right-0 top-3 bottom-3 w-2'       },
-  { dir: 'w',  className: 'absolute left-0 top-3 bottom-3 w-2'        },
-  { dir: 'ne', className: 'absolute top-0 right-0 w-4 h-4'            },
-  { dir: 'nw', className: 'absolute top-0 left-0 w-4 h-4'             },
-  { dir: 'se', className: 'absolute bottom-0 right-0 w-4 h-4'         },
-  { dir: 'sw', className: 'absolute bottom-0 left-0 w-4 h-4'          },
+  { dir: 'n', className: 'absolute top-0 left-3 right-3 h-2' },
+  { dir: 's', className: 'absolute bottom-0 left-3 right-3 h-2' },
+  { dir: 'e', className: 'absolute right-0 top-3 bottom-3 w-2' },
+  { dir: 'w', className: 'absolute left-0 top-3 bottom-3 w-2' },
+  { dir: 'ne', className: 'absolute top-0 right-0 w-4 h-4' },
+  { dir: 'nw', className: 'absolute top-0 left-0 w-4 h-4' },
+  { dir: 'se', className: 'absolute bottom-0 right-0 w-4 h-4' },
+  { dir: 'sw', className: 'absolute bottom-0 left-0 w-4 h-4' },
 ] as const
 
 /* ─── cursor mapping (overrides custom cursor via data attr) ─────────────── */
 const DIR_CURSOR: Record<string, string> = {
-  n:  'cursor-n-resize',
-  s:  'cursor-s-resize',
-  e:  'cursor-e-resize',
-  w:  'cursor-w-resize',
+  n: 'cursor-n-resize',
+  s: 'cursor-s-resize',
+  e: 'cursor-e-resize',
+  w: 'cursor-w-resize',
   ne: 'cursor-ne-resize',
   nw: 'cursor-nw-resize',
   se: 'cursor-se-resize',
@@ -78,30 +88,30 @@ const DIR_CURSOR: Record<string, string> = {
 }
 
 export function Terminal({ isOpen, onClose }: TerminalProps) {
-  const [input,     setInput]     = useState('')
-  const [history,   setHistory]   = useState<HistoryEntry[]>(INITIAL_HISTORY)
-  const [size,      setSize]      = useState({ width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT })
-  const [position,  setPosition]  = useState({ x: 0, y: 0 })
+  const [input, setInput] = useState('')
+  const [history, setHistory] = useState<HistoryEntry[]>(INITIAL_HISTORY)
+  const [size, setSize] = useState({ width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT })
+  const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isDesktop, setIsDesktop] = useState(false)
 
-  const inputRef   = useRef<HTMLInputElement>(null)
-  const termRef    = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const termRef = useRef<HTMLDivElement>(null)
 
   /* ── keep refs in sync so event handlers never read stale state ── */
   const sizeRef = useRef(size)
-  const posRef  = useRef(position)
+  const posRef = useRef(position)
   sizeRef.current = size
-  posRef.current  = position
+  posRef.current = position
 
   const ia = useRef({
-    type:        'none' as 'none' | 'drag' | 'resize',
-    dir:         '',
+    type: 'none' as 'none' | 'drag' | 'resize',
+    dir: '',
     startMouseX: 0,
     startMouseY: 0,
-    startW:      0,
-    startH:      0,
-    startX:      0,
-    startY:      0,
+    startW: 0,
+    startH: 0,
+    startX: 0,
+    startY: 0,
   })
 
   /* ── detect desktop ── */
@@ -118,7 +128,7 @@ export function Terminal({ isOpen, onClose }: TerminalProps) {
     setSize({ width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT })
     if (window.innerWidth >= 768) {
       setPosition({
-        x: Math.max(0, (window.innerWidth  - DEFAULT_WIDTH)  / 2),
+        x: Math.max(0, (window.innerWidth - DEFAULT_WIDTH) / 2),
         y: Math.max(0, (window.innerHeight - DEFAULT_HEIGHT) / 2),
       })
     }
@@ -127,15 +137,13 @@ export function Terminal({ isOpen, onClose }: TerminalProps) {
 
   /* ── auto-scroll output ── */
   useEffect(() => {
-    if (termRef.current)
-      termRef.current.scrollTop = termRef.current.scrollHeight
+    if (termRef.current) termRef.current.scrollTop = termRef.current.scrollHeight
   }, [history])
 
   /* ── global mouse handlers (registered once, uses refs) ── */
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
-      const { type, dir, startMouseX, startMouseY,
-              startW, startH, startX, startY } = ia.current
+      const { type, dir, startMouseX, startMouseY, startW, startH, startX, startY } = ia.current
       if (type === 'none') return
 
       const dx = e.clientX - startMouseX
@@ -143,19 +151,28 @@ export function Terminal({ isOpen, onClose }: TerminalProps) {
 
       if (type === 'drag') {
         setPosition({
-          x: Math.max(0, Math.min(window.innerWidth  - sizeRef.current.width,  startX + dx)),
-          y: Math.max(0, Math.min(window.innerHeight - TITLE_BAR_H,            startY + dy)),
+          x: Math.max(0, Math.min(window.innerWidth - sizeRef.current.width, startX + dx)),
+          y: Math.max(0, Math.min(window.innerHeight - TITLE_BAR_H, startY + dy)),
         })
         return
       }
 
       /* resize */
-      let w = startW, h = startH, x = startX, y = startY
+      let w = startW,
+        h = startH,
+        x = startX,
+        y = startY
 
-      if (dir.includes('e')) w = Math.max(MIN_WIDTH,  startW + dx)
-      if (dir.includes('w')) { w = Math.max(MIN_WIDTH,  startW - dx); x = startX + startW - w }
+      if (dir.includes('e')) w = Math.max(MIN_WIDTH, startW + dx)
+      if (dir.includes('w')) {
+        w = Math.max(MIN_WIDTH, startW - dx)
+        x = startX + startW - w
+      }
       if (dir.includes('s')) h = Math.max(MIN_HEIGHT, startH + dy)
-      if (dir.includes('n')) { h = Math.max(MIN_HEIGHT, startH - dy); y = startY + startH - h }
+      if (dir.includes('n')) {
+        h = Math.max(MIN_HEIGHT, startH - dy)
+        y = startY + startH - h
+      }
 
       setSize({ width: w, height: h })
       setPosition({ x, y })
@@ -165,14 +182,14 @@ export function Terminal({ isOpen, onClose }: TerminalProps) {
       if (ia.current.type === 'none') return
       ia.current.type = 'none'
       document.body.style.userSelect = ''
-      document.body.style.cursor     = ''
+      document.body.style.cursor = ''
     }
 
     window.addEventListener('mousemove', onMove)
-    window.addEventListener('mouseup',   onUp)
+    window.addEventListener('mouseup', onUp)
     return () => {
       window.removeEventListener('mousemove', onMove)
-      window.removeEventListener('mouseup',   onUp)
+      window.removeEventListener('mouseup', onUp)
     }
   }, [])
 
@@ -181,23 +198,31 @@ export function Terminal({ isOpen, onClose }: TerminalProps) {
     if ((e.target as HTMLElement).closest('button')) return
     e.preventDefault()
     ia.current = {
-      type: 'drag', dir: '',
-      startMouseX: e.clientX, startMouseY: e.clientY,
-      startW: sizeRef.current.width,  startH: sizeRef.current.height,
-      startX: posRef.current.x,       startY: posRef.current.y,
+      type: 'drag',
+      dir: '',
+      startMouseX: e.clientX,
+      startMouseY: e.clientY,
+      startW: sizeRef.current.width,
+      startH: sizeRef.current.height,
+      startX: posRef.current.x,
+      startY: posRef.current.y,
     }
     document.body.style.userSelect = 'none'
-    document.body.style.cursor     = 'grabbing'
+    document.body.style.cursor = 'grabbing'
   }
 
   const startResize = (e: React.MouseEvent, dir: string) => {
     e.preventDefault()
     e.stopPropagation()
     ia.current = {
-      type: 'resize', dir,
-      startMouseX: e.clientX, startMouseY: e.clientY,
-      startW: sizeRef.current.width,  startH: sizeRef.current.height,
-      startX: posRef.current.x,       startY: posRef.current.y,
+      type: 'resize',
+      dir,
+      startMouseX: e.clientX,
+      startMouseY: e.clientY,
+      startW: sizeRef.current.width,
+      startH: sizeRef.current.height,
+      startX: posRef.current.x,
+      startY: posRef.current.y,
     }
     document.body.style.userSelect = 'none'
   }
@@ -208,15 +233,22 @@ export function Terminal({ isOpen, onClose }: TerminalProps) {
     const cmd = input.trim().toLowerCase()
     if (!cmd) return
 
-    if (cmd === 'clear') { setHistory([]);  setInput(''); return }
-    if (cmd === 'exit')  { onClose();       setInput(''); return }
+    if (cmd === 'clear') {
+      setHistory([])
+      setInput('')
+      return
+    }
+    if (cmd === 'exit') {
+      onClose()
+      setInput('')
+      return
+    }
 
-    const output =
-      COMMANDS[cmd] ?? `Command not found: ${cmd}\nType "help" for available commands.`
+    const output = COMMANDS[cmd] ?? `Command not found: ${cmd}\nType "help" for available commands.`
 
-    setHistory(prev => [
+    setHistory((prev) => [
       ...prev,
-      { type: 'input',  content: cmd    },
+      { type: 'input', content: cmd },
       { type: 'output', content: output },
     ])
     setInput('')
@@ -294,17 +326,14 @@ export function Terminal({ isOpen, onClose }: TerminalProps) {
       className="shrink-0 px-4 flex items-center border-t"
       style={{ height: INPUT_BAR_H, borderColor: '#2E2E2B' }}
     >
-      <span
-        className="font-mono mr-2 shrink-0"
-        style={{ fontSize, color: '#D97706' }}
-      >
+      <span className="font-mono mr-2 shrink-0" style={{ fontSize, color: '#D97706' }}>
         [ibnu@portfolio ~]$
       </span>
       <input
         ref={inputRef}
         type="text"
         value={input}
-        onChange={e => setInput(e.target.value)}
+        onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleKeyDown}
         className="flex-1 bg-transparent border-none outline-none font-mono"
         style={{ fontSize, color: '#EEEDE9' }}
@@ -327,7 +356,7 @@ export function Terminal({ isOpen, onClose }: TerminalProps) {
         <div
           className="w-full h-[90vh] overflow-hidden shadow-2xl animate-slide-up flex flex-col"
           style={{ backgroundColor: '#0D0D0D', border: '1px solid #2E2E2B' }}
-          onClick={e => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
         >
           {titleBar(false)}
           {outputArea('13px')}
@@ -347,7 +376,7 @@ export function Terminal({ isOpen, onClose }: TerminalProps) {
       <div
         className="fixed z-50"
         style={{ left: position.x, top: position.y, width: size.width, height: size.height }}
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Inner window — overflow-hidden for rounded corners */}
         <div
@@ -365,7 +394,7 @@ export function Terminal({ isOpen, onClose }: TerminalProps) {
             key={dir}
             className={`${className} ${DIR_CURSOR[dir]} z-10`}
             data-resize={dir}
-            onMouseDown={e => startResize(e, dir)}
+            onMouseDown={(e) => startResize(e, dir)}
           />
         ))}
 
